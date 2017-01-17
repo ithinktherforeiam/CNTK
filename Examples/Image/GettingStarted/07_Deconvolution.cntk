@@ -13,7 +13,7 @@ outputDir = "./Output" ;
 
 modelPath = "$outputDir$/Models/07_Deconvolution.model"
 #stderr = "$outputDir$/07_Deconvolution_bs_out.txt"
-makemode=false
+#makemode=false
 
 # TRAINING CONFIG
 trainNetwork = {
@@ -30,7 +30,7 @@ trainNetwork = {
         }.deconv1
 
         # inputs
-        imageShape = 28:28:1                        # image dimensions, 1 channel only
+        imageShape = 28:28:1
         features = Input {imageShape}
         labelDim = 10
         labels = Input (labelDim)
@@ -38,16 +38,13 @@ trainNetwork = {
         featScale = 1/256
         Scale{f} = x => Constant(f) .* x
 
-        #Scale = x => (1.0 / 256.0) .* x
-        #featScaled = Scale (features)
-        
         # apply model to features
         f1 = Scale{featScale} (features)
         z = model (f1)
 
         # rmse loss function
         f2 = Scale{featScale} (features)
-        err = z - f2 #featScaled
+        err = z - f2
         sqErr = err .* err
         mse = ReduceMean(sqErr)
         rmse = Sqrt(mse)
@@ -74,7 +71,7 @@ trainNetwork = {
 
     reader = {
         readerType = "CNTKTextFormatReader"
-        # See ../README.md for details on getting the data (Train-28x28_cntk_text.txt).
+        # See DataSets/MNIST/README.md for details on getting the data (Train-28x28_cntk_text.txt).
         file = "$DataDir$/Train-28x28_cntk_text.txt"
         input = {
             features = { dim = 784 ; format = "dense" }
