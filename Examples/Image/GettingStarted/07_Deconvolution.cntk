@@ -20,7 +20,7 @@ trainNetwork = {
     action = "train"
     
     BrainScriptNetworkBuilder = {
-		cMap = 1
+        cMap = 1
         model = inputFeatures => {
             c1      = ConvolutionalLayer {cMap, (5:5), pad = true}(inputFeatures)
             r1      = ReLU(c1)
